@@ -36,6 +36,8 @@ app.get('/profile/:id', (req,res) => {profile.handleProfile(req, res, knex)})
 
 app.put('/image', (req, res) => {image.handleImage(req, res, knex)})
 
+app.post('/imageurl', (req, res) => {image.handleAPI(req, res)})
+
 app.listen(3000, () => {
     console.log("Its working!")
 })

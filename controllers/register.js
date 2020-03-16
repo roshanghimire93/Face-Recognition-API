@@ -3,17 +3,24 @@ const handleRegister = (req,res, knex, bcrypt) => {
     var salt = bcrypt.genSaltSync(10);
     var hash = bcrypt.hashSync(password, salt);
 
+    if (!email || !password || !name ){
+        return res.status(400).json("Incorrect form submission!")
+    }
+    if (!ValidateEmail(email.toLowerCase())){
+        return res.status(400).json("Invalid email!")
+    }
+
     knex.transaction(trx => {
         knex.insert({
-            email: email,
+            email: email.toLowerCase(),
             hash: hash
         })
         .into('login')
         .returning('email')
         .then(loginEmail => {
             return trx('users').returning('*').insert({
-                name: name,
-                email: loginEmail[0],
+                name: name.toLowerCase(),
+                email: loginEmail[0].toLowerCase(),
                 joined: new Date()
             })
             .then(user => {
@@ -25,6 +32,15 @@ const handleRegister = (req,res, knex, bcrypt) => {
     })
     .catch(err => res.status(400).json('Unable to Register!'));
 
+}
+
+const ValidateEmail = (mail) =>
+{
+ if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+  {
+    return (true)
+  }
+    return (false)
 }
 
 module.exports = {
