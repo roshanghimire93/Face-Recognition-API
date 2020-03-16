@@ -7,6 +7,8 @@ const signin = require('./controllers/sigin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 
+const PORT = process.env.PORT
+
 //connecting to the postgres database using knexjs
 const knex = require('knex')({
     client: 'pg',
@@ -38,6 +40,6 @@ app.put('/image', (req, res) => {image.handleImage(req, res, knex)})
 
 app.post('/imageurl', (req, res) => {image.handleAPI(req, res)})
 
-app.listen(3000, () => {
-    console.log("Its working!")
+app.listen(PORT, () => {
+    console.log(`Its working on port: ${PORT}`)
 })
