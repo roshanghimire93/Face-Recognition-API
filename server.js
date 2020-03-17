@@ -7,7 +7,7 @@ const signin = require('./controllers/sigin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 
-const PORT = process.env.PORT;
+const PORT = process.env.port;
 
 //connecting to the postgres database using knexjs
 const knex = require('knex')({
