@@ -26,9 +26,8 @@ app.use(bodyParser.json());
 app.use(cors())
 
 app.get('/', (req,res) => {
-    //knex.select('*').from('users')
-    //.then(users => 
-      res.send(`It's Working!`)
+    knex.select('*').from('users')
+    .then(users => res.send(users))
 })
 
 app.post('/signin', (req, res) => {signin.handleSignin(req, res, knex, bcrypt)})
