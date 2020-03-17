@@ -7,8 +7,6 @@ const signin = require('./controllers/sigin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 
-const PORT = process.env.port;
-
 //connecting to the postgres database using knexjs
 const knex = require('knex')({
     client: 'pg',
@@ -22,11 +20,12 @@ const knex = require('knex')({
 
 const app = express();
 
-app.use(express.json());
+app.use(bodyParser.json());
 app.use(cors())
 
 app.get('/', (req,res) => {
-  res.send('It is working!')
+    knex.select('*').from('users')
+    .then(users => res.send(users))
 })
 
 app.post('/signin', (req, res) => {signin.handleSignin(req, res, knex, bcrypt)})
@@ -39,6 +38,6 @@ app.put('/image', (req, res) => {image.handleImage(req, res, knex)})
 
 app.post('/imageurl', (req, res) => {image.handleAPI(req, res)})
 
-app.listen(PORT || 3000, () => {
-    console.log(`Its working on port: ${PORT}`)
+app.listen(process.env.PORT || 3000, () => {
+    console.log(`Its working on port: ${process.env.PORT}`)
 })
