@@ -1,36 +1,46 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcryptjs');
 const cors = require('cors');
-const knex = require('knex');
-
 const register = require('./controllers/register');
-const signin = require('./controllers/signin');
+const signin = require('./controllers/sigin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 
-const knex = knex({
-  client: 'pg',
-  connection: {
-    host : '127.0.0.1',
-    user : 'aneagoie',
-    password : '',
-    database : 'smart-brain'
-  }
-});
+const PORT = process.env.PORT
+
+//connecting to the postgres database using knexjs
+const knex = require('knex')({
+    client: 'pg',
+    connection: {
+      host : '127.0.0.1',
+      user : '',
+      password : '',
+      database : 'face-recognition'
+    }
+  });
 
 const app = express();
 
-app.use(cors())
 app.use(bodyParser.json());
+app.use(cors())
 
-app.get('/', (req, res)=> { res.send(`It's Working!`) })
-app.post('/signin', signin.handleSignin(knex, bcrypt))
-app.post('/register', (req, res) => { register.handleRegister(req, res, knex, bcrypt) })
-app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, knex)})
-app.put('/image', (req, res) => { image.handleImage(req, res, knex)})
-app.post('/imageurl', (req, res) => { image.handleApiCall(req, res)})
+app.get('/', (req,res) => {
+    //knex.select('*').from('users')
+    //.then(users => 
+      res.send(`It's Working!`)
+})
 
-app.listen(3000, ()=> {
-  console.log('It is working on port 3000');
+app.post('/signin', (req, res) => {signin.handleSignin(req, res, knex, bcrypt)})
+
+app.post('/register', (req,res) => {register.handleRegister(req, res, knex, bcrypt)})
+
+app.get('/profile/:id', (req,res) => {profile.handleProfile(req, res, knex)})
+
+app.put('/image', (req, res) => {image.handleImage(req, res, knex)})
+
+app.post('/imageurl', (req, res) => {image.handleAPI(req, res)})
+
+app.listen(PORT, () => {
+    console.log(`Its working on port: ${PORT}`)
 })
