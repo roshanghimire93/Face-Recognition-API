@@ -4,19 +4,12 @@ const handleRegister = (req,res, knex, bcrypt) => {
     var hash = bcrypt.hashSync(password, salt);
 
     const duplicateEmail = (userEmail) => {
-        knex.select('*').from('users').where('email','=', userEmail.toLowerCase())
-        .then (user => {
-            if(user[0].id){
-                return true
-            }
-            else{
-                return false
-            }
-        })
+        return knex.select('*').from('users').where('email','=', userEmail.toLowerCase())
+        .then (user => {res.json(user[0])})
     }
 
     if(duplicateEmail(email)){
-        return res.status(400).json('Duplicate email!')
+        return res.send(duplicateEmail(email))
     }
 
     if (!email || !password || !name ){
