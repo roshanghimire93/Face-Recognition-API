@@ -5,7 +5,7 @@ const handleRegister = (req,res, knex, bcrypt) => {
 
     const duplicateEmail = (userEmail) => {
         return knex.select('*').from('users').where('email','=', userEmail.toLowerCase())
-        .then (user => {res.json(user[0])})
+        .then (user => {console.log((user[0]))})
     }
 
     if(duplicateEmail(email)){
