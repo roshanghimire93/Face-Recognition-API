@@ -13,7 +13,7 @@ const PORT = process.env.PORT
 const knex = require('knex')({
     client: 'pg',
     connection: {
-      connectString : process.env.DATABASE_URL,
+      connectionString : process.env.DATABASE_URL,
       ssl: true,
     }
   });
@@ -24,9 +24,8 @@ app.use(bodyParser.json());
 app.use(cors())
 
 app.get('/', (req,res) => {
-  res.send(`it's working!`)
-    // knex.select('*').from('users')
-    // .then(users => res.send(users))
+    knex.select('*').from('users')
+    .then(users => res.send(users))
 })
 
 app.post('/signin', (req, res) => {signin.handleSignin(req, res, knex, bcrypt)})
