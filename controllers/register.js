@@ -2,15 +2,7 @@ const handleRegister = (req,res, knex, bcrypt) => {
     const {email, name, password} = req.body;
     var salt = bcrypt.genSaltSync(10);
     var hash = bcrypt.hashSync(password, salt);
-
-    const duplicateEmail = (userEmail) => {
-        return knex.select('*').from('users').where('email','=', userEmail.toLowerCase())
-        .then (user => {console.log((user[0]))})
-    }
-
-    if(duplicateEmail(email)){
-        return res.send(duplicateEmail(email))
-    }
+    
 
     if (!email || !password || !name ){
         return res.status(400).json("Incorrect form submission!")
