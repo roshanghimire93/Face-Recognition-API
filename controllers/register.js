@@ -2,7 +2,6 @@ const handleRegister = (req,res, knex, bcrypt) => {
     const {email, name, password} = req.body;
     var salt = bcrypt.genSaltSync(10);
     var hash = bcrypt.hashSync(password, salt);
-    
 
     if (!email || !password || !name ){
         return res.status(400).json("Incorrect form submission!")
