@@ -3,7 +3,7 @@ const Clarifai = require('clarifai');
 // initialize with your api key. This will also work in your browser via http://browserify.org/
 //initialized the face detection API with the apiKey
 const app = new Clarifai.App({
-    apiKey: '00513f0e128947d585f3d6e09d54598a'
+    apiKey: process.env.API_CLARIFAI
    });
 
 const handleAPI = (req, res) => {
